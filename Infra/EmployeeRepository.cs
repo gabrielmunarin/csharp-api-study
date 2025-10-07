@@ -1,0 +1,25 @@
+using PrimeiraApi.Model;
+using PrimeiraApi.Repository;
+
+namespace PrimeiraApi.Infra;
+
+public class EmployeeRepository : IEmployeeRepository
+{
+    private readonly ConnectionContext _context = new ConnectionContext();
+        
+    public void add(Employee employee)
+    {
+        _context.Employees.Add(employee);
+        _context.SaveChanges();
+    }
+
+    public List<Employee> Get()
+    {
+        return _context.Employees.ToList();
+    }
+
+    public Employee GetById(int id)
+    {
+        return _context.Employees.Find(id);
+    }
+}
