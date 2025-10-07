@@ -18,8 +18,8 @@ public class EmployeeRepository : IEmployeeRepository
         return _context.Employees.ToList();
     }
 
-    public Employee GetById(int id)
+    public Employee? Get(int id)
     {
         return _context.Employees.Find(id);
-    }
+    } 
 }

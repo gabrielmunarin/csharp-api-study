@@ -30,11 +30,25 @@ public class EmployeeController : ControllerBase
         return Created();
     }
     
+    [HttpGet("{id}/donwload")]
+    public IActionResult DonwloadPhoto(int id)
+    {
+       var employee = _employeeRepository.Get(id);
+       var dataBytes = System.IO.File.ReadAllBytes(employee.photoUrl);
+       return File(dataBytes, "application/pdf");//ou app image/png imagem/jpeg
+    }
     [HttpGet]
     public IActionResult Get()
     {
         var employees = _employeeRepository.Get();
         return Ok(employees);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        var employee = _employeeRepository.Get(id);
+        return Ok(employee);
     }
 
 }

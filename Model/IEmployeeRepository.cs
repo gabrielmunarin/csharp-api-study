@@ -6,5 +6,6 @@ public interface IEmployeeRepository
 
     List<Employee> Get();
     
+    Employee? Get(int id);
 
 }
