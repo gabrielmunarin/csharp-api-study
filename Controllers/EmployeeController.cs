@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PrimeiraApi.Model;
-using PrimeiraApi.Repository;
-using PrimeiraApi.ViewModel;
+using PrimeiraApi.Domain.Model;
+using PrimeiraApi.Domain.Repository;
+using PrimeiraApi.Application.ViewModel;
 
 namespace PrimeiraApi.Controllers;
 
@@ -22,9 +22,15 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public IActionResult Add([FromForm]EmployeeViewModel employeeViewModel)
     {
-        var filePath = Path.Combine("Storage", employeeViewModel.Photo.FileName);
-        using Stream fileStream = new FileStream(filePath, FileMode.Create);
-        employeeViewModel.Photo.CopyTo(fileStream);
+        string? filePath = null;
+        
+        if (employeeViewModel.Photo != null)
+        {
+           filePath = Path.Combine("Storage", employeeViewModel.Photo.FileName);
+           using Stream fileStream = new FileStream(filePath, FileMode.Create);
+           employeeViewModel.Photo.CopyTo(fileStream);
+        }
+        
         
         var employee = new Employee(employeeViewModel.name, employeeViewModel.age, filePath);
 
@@ -41,15 +47,16 @@ public class EmployeeController : ControllerBase
        return File(dataBytes, "image/jpeg");//ou app image/png imagem/jpeg
     }
     
-    [Authorize]
+    //[Authorize]
     [HttpGet]
-    public IActionResult Get()
+    public IActionResult Get(int pageNumber, int pageQuantity)
     {
-        var employees = _employeeRepository.Get();
+        //throw new Exception("erro teste");
+        var employees = _employeeRepository.Get(pageNumber, pageQuantity);
         return Ok(employees);
     }
     
-    [Authorize]
+    //[Authorize]
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {

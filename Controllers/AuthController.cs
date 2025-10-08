@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using PrimeiraApi.Services;
+using PrimeiraApi.Application.Services;
+using PrimeiraApi.Domain.Model;
 
 namespace PrimeiraApi.Controllers;
 [ApiController]
@@ -11,7 +12,7 @@ public class AuthController : ControllerBase
     {
         if (username == "teste" && password == "123")
         {
-            var token = TokenService.GenerateToken(new Model.Employee());
+            var token = TokenService.GenerateToken(new Employee());
             return Ok(token);
         }
         

@@ -2,9 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using PrimeiraApi.Model;
+using PrimeiraApi.Domain.Model;
 
-namespace PrimeiraApi.Services;
+namespace PrimeiraApi.Application.Services;
 
 public class TokenService
 {

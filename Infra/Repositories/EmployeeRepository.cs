@@ -1,5 +1,7 @@
-using PrimeiraApi.Model;
-using PrimeiraApi.Repository;
+using PrimeiraApi.Domain.DTO;
+using PrimeiraApi.Domain.Model;
+using PrimeiraApi.Domain.Model;
+using PrimeiraApi.Domain.Repository;
 
 namespace PrimeiraApi.Infra;
 
@@ -13,9 +15,9 @@ public class EmployeeRepository : IEmployeeRepository
         _context.SaveChanges();
     }
 
-    public List<Employee> Get()
+    public List<EmployeeDTO> Get(int pageNumber, int pageQuantity)
     {
-        return _context.Employees.ToList();
+        return _context.Employees.Skip(pageNumber * pageQuantity).Take(pageQuantity).ToList();
     }
 
     public Employee? Get(int id)
