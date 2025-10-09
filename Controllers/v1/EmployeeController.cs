@@ -1,14 +1,16 @@
+using Asp.Versioning;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PrimeiraApi.Domain.DTO;
 using PrimeiraApi.Application.ViewModel;
+using PrimeiraApi.Domain.DTO;
 using PrimeiraApi.Domain.Model.EmployeeAggregate;
 
-namespace PrimeiraApi.Controllers;
+namespace PrimeiraApi.Controllers.v1;
 
 [ApiController]
-[Route("api/v1/employee")]
+[Route("api/v{version:apiVersion}/employee")]
+[ApiVersion("1.0")]
 public class EmployeeController : ControllerBase
 {   
     //chamando a interface/ vai usar isso pras rotas/ precisa ser colocada dentro de um construtor
