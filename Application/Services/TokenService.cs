@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using PrimeiraApi.Domain.Model;
+using PrimeiraApi.Domain.Model.EmployeeAggregate;
 
 namespace PrimeiraApi.Application.Services;
 

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PrimeiraApi.Domain.Model;
+using PrimeiraApi.Domain.Model.CompanyAggregate;
+using PrimeiraApi.Domain.Model.EmployeeAggregate;
 
 namespace PrimeiraApi.Infra;
 
@@ -9,6 +10,7 @@ public class ConnectionContext : DbContext
 {
     //procura a tabela no banco e mapeia - ORM
     public DbSet<Employee> Employees{ get; set; }
+    public DbSet<Company>  Companies{ get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql(
         "Server=localhost;" +

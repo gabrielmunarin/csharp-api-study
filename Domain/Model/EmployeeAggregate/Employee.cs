@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PrimeiraApi.Domain.Model;
+namespace PrimeiraApi.Domain.Model.EmployeeAggregate;
     
     [Table("employee")]
     public class Employee
@@ -13,11 +13,7 @@ namespace PrimeiraApi.Domain.Model;
         
         [Column("photo_url")]
         public string? photoUrl {get; private set;}
-
-        public Employee()
-        {
-            
-        }
+        
         public Employee(string name, int age, string photoUrl)
         {
             this.name = name ?? throw new ArgumentNullException(nameof(name));
