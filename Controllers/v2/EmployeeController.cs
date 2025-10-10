@@ -9,8 +9,8 @@ using PrimeiraApi.Domain.Model.EmployeeAggregate;
 namespace PrimeiraApi.Controllers.v2;
 
 [ApiController]
-[Route("api/v{version:apiVersion}/employee")]
 [ApiVersion("2.0")]
+[Route("api/v{version:apiVersion}/employee")]
 public class EmployeeController : ControllerBase
 {   
     //chamando a interface/ vai usar isso pras rotas/ precisa ser colocada dentro de um construtor
@@ -22,6 +22,7 @@ public class EmployeeController : ControllerBase
         _employeeRepository = employeeRepository;
         _mapper = mapper;
     }
+    
 
     [Authorize]
     [HttpPost]

@@ -5,14 +5,14 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PrimeiraApi.Application.Swagger;
 
-public class ConfiguraSwaggerGenOptions
-{
     public class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
     {
         private readonly IApiVersionDescriptionProvider _apiVersionDescriptionProvider;
 
         public ConfigureSwaggerGenOptions(IApiVersionDescriptionProvider apiVersionDescriptionProvider)
-            => _apiVersionDescriptionProvider = apiVersionDescriptionProvider;
+        {
+            _apiVersionDescriptionProvider = apiVersionDescriptionProvider ?? throw new ArgumentNullException(nameof(apiVersionDescriptionProvider));
+        }
 
         public void Configure(SwaggerGenOptions options)
         {
@@ -26,7 +26,7 @@ public class ConfiguraSwaggerGenOptions
         {
             var info = new OpenApiInfo()
             {
-                Title = "Web.API - Gabriel",
+                Title = "Web.API",
                 Version = description.ApiVersion.ToString()
             };
 
@@ -38,4 +38,3 @@ public class ConfiguraSwaggerGenOptions
             return info;
         }
     }
-}

@@ -4,14 +4,11 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace PrimeiraApi.Application.Swagger;
-
-public class SwaggerDefaultValues : IOperationFilter
-{
+    public class SwaggerDefaultValues : IOperationFilter
+    {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var apiDescription = context.ApiDescription;
-
-            operation.Deprecated |= apiDescription.IsDeprecated();
 
             if (operation.Parameters == null)
             {
@@ -35,4 +32,4 @@ public class SwaggerDefaultValues : IOperationFilter
                 parameter.Required |= description.IsRequired;
             }
         }
-}
+    }

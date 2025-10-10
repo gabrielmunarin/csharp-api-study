@@ -1,5 +1,6 @@
 using System.Text;
 using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -20,18 +21,9 @@ builder.Services.AddControllers();
 //adicionar o arquivo(profile) de automapper
 builder.Services.AddAutoMapper(typeof(DomainToDTOMapping));
 
-//adiciona versionamento de rotas
-builder.Services.AddApiVersioning(o =>
-{
-    o.AssumeDefaultVersionWhenUnspecified = true;
-    o.DefaultApiVersion = new ApiVersion(1, 0);
-});
+builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddVersionedApiExplorer(setup =>
-{
-    setup.GroupNameFormat = "'v'VVV";
-    setup.SubstituteApiVersionInUrl = true;
-});
+//adiciona versionamento de rotas
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -64,41 +56,26 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning()
+    .AddMvc()
+    .AddApiExplorer(setup =>
+    {
+        setup.GroupNameFormat = "'v'VVV";
+        setup.SubstituteApiVersionInUrl = true; 
+    });
 
+builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
 
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddCors(op =>
 {
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    op.AddPolicy(name: "MyPolicy", policy =>
     {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
+        policy.WithOrigins("http://localhost:8080")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
-    
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer",
-                },
-                Scheme = "Bearer",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
-            },
-            new List<string>() 
-        }
-    });
-    
 });
 
 //ijetcao de dependencia, quando noa precisa ficar instanciando a classe
@@ -128,11 +105,22 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        var version = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var description in version.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"Web Api - {description.GroupName.ToUpper()}");
+        }
+    });
     app.UseExceptionHandler("/error-development");
     app.UseSwagger();
     app.UseSwaggerUI();
 }else{app.UseExceptionHandler("/error");}
 
+
+app.UseCors("MyPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
